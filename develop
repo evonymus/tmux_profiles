@@ -1,0 +1,31 @@
+#######################################################################
+#                       Startup File for TMux
+# created 'development' tmux session, opens two windows
+# The first is divided into 3 panels, in the 1st there's Vim opened
+# the 2nd is also divided into 3 panels, in the 3rd one there's started
+# gtd script (program) that controls the time spent at the computer
+#
+# Marek Dziekanski 2016-08-22
+#######################################################################
+
+#there's created a new session named 'development' and detached
+tmux new-session -s development -n 'vim' -d
+#there's sent to the session command cd...
+tmux send-keys -t development 'cd ~/Development' C-m
+#now there's the vim editor opened
+tmux send-keys -t development 'vim' C-m
+#the window is split horizontaly, the new window is 20 percent wide
+tmux split-window -h -p 20 -t development
+#the new window is split into new panel, also 20 percent high
+tmux split -v -p 20 -t development:1.1
+#new window is started named 'console'
+tmux new-window -n console -t development
+tmux split-window -h -p 20 -t development:2
+tmux split -v -p 20 -t development:2.1
+#in the 2nd window (console) 2nd panel there's the 'gtd -tnm' command run
+tmux send-keys -t development:2.2 'gtd -tnm' C-m
+#selecting the first window
+tmux select-window -t development:1.0
+#attaching to the session
+tmux attach -t development
+
